@@ -1,0 +1,21 @@
+# Set the target directory path
+$directoryPath = "C:\Users\parveen.kumar"
+
+# Get all subdirectories in the target directory
+$subdirectories = Get-ChildItem -Path $directoryPath -Directory -Recurse
+
+# Iterate through each subdirectory
+foreach ($subdirectory in $subdirectories) {
+    # Measure the size of the subdirectory
+    $size = Get-ChildItem -Path $subdirectory.FullName -File -Recurse | Measure-Object -Property Length -Sum | Select-Object -ExpandProperty Sum
+
+    # Convert the size to GB
+    $sizeGB = $size / 1GB
+
+    # Check if the size is greater than 10 GB
+    if ($sizeGB -gt 10) {
+        Write-Output "Folder: $($subdirectory.FullName)"
+        Write-Output "Size: $sizeGB GB"
+        Write-Output "-----------------------------"
+    }
+}
